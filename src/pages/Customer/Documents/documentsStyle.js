@@ -11,11 +11,22 @@ export const styles = makeStyles((theme) => ({
     padding: '0px 10px 0px 10px',
     marginRight: '5px',
     maxWidth: '250px',
+    justifyContent: 'center',
   },
   boxColumn: {
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  legendOk: {
+    color: '#4b7bec',
+    fontSize: '11px',
+    marginBottom: '5px',
+  },
+  legendNotOk: {
+    color: '#ff3838',
+    fontSize: '11px',
+    marginBottom: '5px',
   },
 }));

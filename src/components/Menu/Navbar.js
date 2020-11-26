@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 import Dropdown from './Dropdown';
 
+//import { visibleButtonsLogged } from '../../states/Menu/menuAcitons';
+import { logout } from '../../states/Auth/authActions';
+
 function Navbar() {
   const [click, setClick] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+
+  const menuState = useSelector((state) => state.menu);
+  const customer = useSelector((state) => state.customerState.customer);
+  const dispatch = useDispatch();
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -27,8 +35,21 @@ function Navbar() {
     }
   };
 
+  const handleChangeLogin = () => {
+    dispatch(logout());
+    closeMobileMenu();
+  };
+
+  const styleUser = {
+    display: 'flex',
+    wordWrap: 'wrap',
+    color: 'white',
+    fontSize: '0.7rem',
+  };
+
   return (
     <>
+      {console.log(menuState.labelButtonSignIn)}
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           My Invest
@@ -40,53 +61,85 @@ function Navbar() {
         </div>
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
           <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+            <Link
+              to={menuState.navegateHomeTo}
+              className="nav-links"
+              onClick={closeMobileMenu}
+            >
               Home
             </Link>
           </li>
-          <li
-            className="nav-item"
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-          >
-            <Link
-              to="/services"
-              className="nav-links"
-              onClick={closeMobileMenu}
+          {menuState.linkPerfil ? (
+            <li
+              className="nav-item"
+              onMouseEnter={onMouseEnter}
+              onMouseLeave={onMouseLeave}
             >
-              Investimentos <i className="fas fa-caret-down" />
-            </Link>
-            {dropdown && <Dropdown />}
-          </li>
+              <Link
+                to="/services"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Investimentos <i className="fas fa-caret-down" />
+              </Link>
+              {dropdown && <Dropdown />}
+            </li>
+          ) : (
+            ''
+          )}
+
+          {menuState.linkPerfil ? (
+            <li className="nav-item">
+              <Link
+                to="/cadastro"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Cadastro
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
+          {menuState.linkPerfil ? (
+            <li className="nav-item">
+              <Link
+                to="/contact-us"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Perfil
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
           <li className="nav-item">
             <Link
-              to="/cadastro"
-              className="nav-links"
-              onClick={closeMobileMenu}
+              to={menuState.navegateTo}
+              className="nav-links-box"
+              onClick={handleChangeLogin}
             >
-              Cadastro
+              {menuState.labelButtonSignIn}
             </Link>
           </li>
-          <li className="nav-item">
+          {/* <li>
             <Link
-              to="/contact-us"
-              className="nav-links"
-              onClick={closeMobileMenu}
-            >
-              Perfil
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/sign-up"
+              to="/cadastre-se"
               className="nav-links-mobile"
               onClick={closeMobileMenu}
             >
-              Sign Up
+              Cadastre-se
             </Link>
-          </li>
+          </li> */}
         </ul>
-        <Button />
+        {menuState.visibleButtonSignUp ? (
+          <Button />
+        ) : (
+          <div className="user-menu">
+            <span style={styleUser}>Bem vindo, {customer.name}!</span>
+          </div>
+        )}
       </nav>
     </>
   );

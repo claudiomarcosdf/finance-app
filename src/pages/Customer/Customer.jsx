@@ -14,10 +14,7 @@ import PersonalData from './PersonalData/PersonalData';
 import Address from './Address/Address';
 import BankData from './BankData/BankData';
 import Documents from './Documents/Documents';
-import {
-  currentCustomer,
-  editCustomer,
-} from '../../states/Customer/customerActions';
+import { editCustomer } from '../../states/Customer/customerActions';
 
 const useStyles = styles;
 

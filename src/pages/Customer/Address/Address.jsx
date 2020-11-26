@@ -10,7 +10,6 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 import { styles } from './addressStyle';
-import * as format from '../../../helpers/formatHelpers';
 import CepMask from '../../../helpers/CepMask';
 import PhoneMask from '../../../helpers/PhoneMask';
 import { currentCustomer } from '../../../states/Customer/customerActions';

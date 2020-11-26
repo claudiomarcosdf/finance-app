@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ImageUploader from 'react-images-upload';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
-import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
-
-import { styles } from './CustomerProfilePhotoStyle';
-import { saveImage } from '../../services/apiImagesService';
+import { styles } from './customerProfilePhotoStyle';
+import { addCustomerPhoto } from '../../states/Customer/customerActions';
 
 export default function CustomerProfilePhoto(props) {
   const { onClose } = props;
 
   const [photo, setPhoto] = useState({});
   const { _id } = useSelector((state) => state.customerState.customer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!_.isEmpty(photo)) {
       let formData = new FormData();
       formData.append('file', photo[0]);
-      saveImage(_id, 'photo', formData)
-        .then((response) => {
-          toastr.success('Sucesso', 'Atualização realizada com sucesso.');
-        })
-        .catch((error) => {
-          toastr.error('Erro', error);
-        });
+
+      dispatch(addCustomerPhoto(_id, 'photo', formData));
     }
-  }, [photo]);
+  }, [photo, _id, dispatch]);
 
   const handleModalClose = () => {
     onClose(null);

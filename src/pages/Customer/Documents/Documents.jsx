@@ -4,40 +4,65 @@ import ImageUploader from 'react-images-upload';
 import Typography from '@material-ui/core/Typography';
 
 import { toastr } from 'react-redux-toastr';
-import axios from 'axios';
 
 import _ from 'lodash';
 import { styles } from './documentsStyle';
+import { saveDocument } from '../../../services/apiImagesService';
 
 export default function Documents(props) {
-  // const [cpfPicture, setCpfPicture] = useState([]);
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const classes = styles();
+  const { _id, personal_data } = useSelector(
+    (state) => state.customerState.customer
+  );
+  const { documents } = personal_data;
+  const [imageCpf, setImageCpf] = useState(!!documents.cpf_name);
+  const [imageRg, setImageRg] = useState(!!documents.rg_name);
+  const [imageResidence, setImageResidence] = useState(
+    !!documents.residence_name
+  );
+
   const [cpfPicture, setCpfPicture] = useState({});
   const [rgPicture, setRgPicture] = useState({});
   const [residencePicture, setResidencePicture] = useState({});
 
-  const { _id } = useSelector((state) => state.customerState.customer);
+  useEffect(() => {
+    if (!_.isEmpty(cpfPicture)) {
+      (async () => {
+        await saveImage('cpf', cpfPicture);
+        setImageCpf(true);
+      })();
+    }
+  }, [cpfPicture]);
 
-  // useEffect(() => {
-  //   if (!_.isEmpty(cpfPicture)) {
-  //     let formData = new FormData();
-  //     formData.append('file', cpfPicture[0]);
-  //     axios
-  //       .post(`${BASE_URL}/clientes/photo?id=${_id}`, formData, {
-  //         headers: {
-  //           accept: 'application/json',
-  //           'Accept-Language': 'en-US,en;q=0.8',
-  //           'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         toastr.success('Sucesso', 'Atualização realizada com sucesso.');
-  //       })
-  //       .catch((error) => {
-  //         toastr.error('Erro', error);
-  //       });
-  //   }
-  // }, [cpfPicture]);
+  useEffect(() => {
+    if (!_.isEmpty(rgPicture)) {
+      (async () => {
+        await saveImage('rg', rgPicture);
+        setImageRg(true);
+      })();
+    }
+  }, [rgPicture]);
+
+  useEffect(() => {
+    if (!_.isEmpty(residencePicture)) {
+      (async () => {
+        await saveImage('residence', residencePicture);
+        setImageResidence(true);
+      })();
+    }
+  }, [residencePicture]);
+
+  const saveImage = (type, picture) => {
+    let formData = new FormData();
+    formData.append('file', picture[0]);
+    saveDocument(_id, 'document', type, formData)
+      .then((response) => {
+        toastr.success('Sucesso', 'Documento salvo com sucesso.');
+      })
+      .catch((error) => {
+        toastr.error('Erro', error);
+      });
+  };
 
   const onDropCpf = (picture) => {
     // setCpfPicture([...cpfPicture, picture]);
@@ -52,18 +77,25 @@ export default function Documents(props) {
     setResidencePicture(picture);
   };
 
-  const classes = styles();
+  const getLegend = (document) => {
+    if (document) {
+      return <span className={classes.legendOk}>Documento já enviado.</span>;
+    } else {
+      return (
+        <span className={classes.legendNotOk}>Documento não enviado.</span>
+      );
+    }
+  };
+
   return (
     <div>
-      {cpfPicture ? console.log(cpfPicture[0]) : cpfPicture}
-      {/* {console.log(rgPicture[0].file)} */}
-      {/* {console.log(residencePicture[0].file)} */}
+      {/* {cpfPicture ? console.log(cpfPicture[0]) : cpfPicture} */}
       <Typography
         variant="subtitle1"
         color="textSecondary"
         style={{ marginTop: '0px', marginBottom: '2px' }}
       >
-        Upload de documentos:
+        Upload de documentos
       </Typography>
       <div className={classes.boxColumn}>
         <div className={classes.box}>
@@ -78,10 +110,11 @@ export default function Documents(props) {
             fileSizeError="Tamanho do arquivo maior que o permitido"
             fileTypeError="é um tipo não suportado"
             onChange={onDropCpf}
-            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            imgExtension={['.jpg', '.png', '.gif']}
             maxFileSize={5242880}
             singleImage={true}
           />
+          {getLegend(imageCpf)}
         </div>
         <div className={classes.box}>
           <ImageUploader
@@ -95,10 +128,11 @@ export default function Documents(props) {
             fileSizeError="Tamanho do arquivo maior que o permitido"
             fileTypeError="é um tipo não suportado"
             onChange={onDropRg}
-            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            imgExtension={['.jpg', '.png', '.gif']}
             maxFileSize={5242880}
             singleImage={true}
           />
+          {getLegend(imageRg)}
         </div>
         <div className={classes.box}>
           <ImageUploader
@@ -112,10 +146,11 @@ export default function Documents(props) {
             fileSizeError="Tamanho do arquivo maior que o permitido"
             fileTypeError="é um tipo não suportado"
             onChange={onDropResidence}
-            imgExtension={['.jpg', '.gif', '.png', '.gif']}
+            imgExtension={['.jpg', '.png', '.gif']}
             maxFileSize={5242880}
             singleImage={true}
           />
+          {getLegend(imageResidence)}
         </div>
       </div>
     </div>

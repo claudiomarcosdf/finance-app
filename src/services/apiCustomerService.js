@@ -3,8 +3,8 @@ import axios from 'axios';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 //Apenas para buscar algum cliente enquanto desenvolvo
-async function getCustomer(id) {
-  const response = await axios.get(`${BASE_URL}/clientes/${id}`);
+async function getCustomer(email) {
+  const response = await axios.get(`${BASE_URL}/clientes/email?email=${email}`);
 
   if (response.status !== 200) {
     throw Error(response.Error);

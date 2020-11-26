@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import GridItem from '../../components/Grid/GridItem.js';
 import GridContainer from '../../components/Grid/GridContainer.js';
 import Button from '../../components/CustomButtons/Button.js';
+import Typography from '@material-ui/core/Typography';
 import Card from '../../components/Card/Card.js';
 import CardAvatar from '../../components/Card/CardAvatar.js';
 import CardBody from '../../components/Card/CardBody.js';
@@ -12,10 +13,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 
 import _ from 'lodash';
-import { styles } from './CustomerProfileStyle';
+import { formatCurrency } from '../../helpers/formatHelpers';
+import { styles } from './customerProfileStyle';
 import avatarDefault from '../../assets/images/user_green.jpg';
 import '../../App.css';
-import { fetchCustomer } from '../../states/Customer/customerActions';
 import ReactModal from '../../components/Modal/ReactModal';
 import { visibleModal, actualModal } from '../../states/Modal/modalActions';
 import CustomerProfilePhoto from './CustomerProfilePhoto';
@@ -28,20 +29,15 @@ export default function CustomerProfile() {
   const customerState = useSelector((state) => state.customerState);
   const dispatch = useDispatch();
 
-  const getCustomer = useCallback(() => {
-    dispatch(fetchCustomer('5faab9962fee31b0cb455fbb')); //apenas para iniciar o app com um cliente
-  }, [dispatch]);
-
   useEffect(() => {
-    getCustomer();
     if (!_.isEmpty(customerState.customer)) {
-      if (!_.isUndefined(customerState.customer.personal_data.photo_name)) {
+      if (customerState.customer.personal_data.photo_name !== '') {
         setAvatar(
           `${customerState.customer.personal_data.photo_url}${customerState.customer.personal_data.photo_name}`
         );
       }
     }
-  }, [getCustomer, avatar, customerState.customer]);
+  }, [customerState.customer]);
 
   const handleCloseModal = () => {
     dispatch(visibleModal(false));
@@ -56,7 +52,7 @@ export default function CustomerProfile() {
   return (
     <div className="home">
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card profile className={classes.cardProfile}>
             <CardAvatar profile>
               <Tooltip
@@ -73,9 +69,12 @@ export default function CustomerProfile() {
               <h6 className={classes.cardCategory}>
                 {customerState.customer.code || 'CÓDIGO'}
               </h6>
-              <h4 className={classes.cardTitleBlack}>
+              <h4 className={classes.cardName}>
                 {customerState.customer.name || 'Nome'}
               </h4>
+              <h5 className={classes.cardEmail}>
+                {customerState.customer.email || 'Email'}
+              </h5>
               <div className={classes.description}>
                 Status:{' '}
                 <span
@@ -95,6 +94,33 @@ export default function CustomerProfile() {
               </Link>
             </CardBody>
             <span className={classes.errorMsg}>{customerState.errors[0]}</span>
+          </Card>
+
+          <Card className={classes.cardProfile}>
+            <CardBody profile>
+              <Typography variant="subtitle2">Meus investimentos</Typography>
+
+              <div className={classes.boxInvestments}>
+                {!_.isEmpty(customerState.customer.name)
+                  ? customerState.customer.investments.map((investment) => {
+                      const { capital, months } = investment;
+                      return (
+                        <div
+                          key={investment._id}
+                          className={classes.itemsInvestments}
+                        >
+                          <div className={classes.item}>
+                            {formatCurrency(capital)}
+                          </div>
+                          <div className={classes.item}>
+                            Tempo: {months} meses
+                          </div>
+                        </div>
+                      );
+                    })
+                  : ''}
+              </div>
+            </CardBody>
           </Card>
         </GridItem>
       </GridContainer>

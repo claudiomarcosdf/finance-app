@@ -9,8 +9,10 @@ import {
   EDIT_CUSTOMER_REQUEST,
   EDIT_CUSTOMER_SUCCESS,
   EDIT_CUSTOMER_FAILURE,
+  ADD_CUSTOMER_PHOTO_REQUEST,
+  ADD_CUSTOMER_PHOTO_SUCCESS,
+  ADD_CUSTOMER_PHOTO_FAILURE,
 } from './customerTypes';
-import { act } from 'react-dom/test-utils';
 
 const initialState = {
   loading: false,
@@ -68,6 +70,27 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         // customer: {},
+        errors: action.payload,
+      };
+
+    case ADD_CUSTOMER_PHOTO_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ADD_CUSTOMER_PHOTO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        customer: action.payload,
+        errors: [],
+      };
+
+    case ADD_CUSTOMER_PHOTO_FAILURE:
+      return {
+        ...state,
+        loading: false,
         errors: action.payload,
       };
 

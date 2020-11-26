@@ -37,7 +37,7 @@
 
 .nav-menu {
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: repeat(6, auto);
   grid-gap: 10px;
   list-style: none;
   text-align: center;
@@ -54,6 +54,15 @@
 
 .nav-links {
   color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links-box {
+  color: white;
+  font-weight: 500;
+  background-color: #312f2f;
+  border-radius: 4px;
   text-decoration: none;
   padding: 0.5rem 1rem;
 }
@@ -157,5 +166,11 @@
 
   button {
     display: none;
+  }
+
+  .user-menu {
+    display: flex;
+    word-wrap: wrap;
+    width: 20px;
   }
 }

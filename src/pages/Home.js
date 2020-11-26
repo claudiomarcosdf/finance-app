@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
+import Typograpy from '@material-ui/core/Typography';
 
 import '../App.css';
 
@@ -31,16 +30,14 @@ export default function Home() {
   return (
     <>
       <div className="home">
-        <div className={classes.box}></div>
-        {/* <div className={classes.root}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Paper className={classes.paper} elevation={0}>
-                Home
-              </Paper>
-            </Grid>
-          </Grid>
-        </div> */}
+        <div>
+          <div>
+            <Typograpy variant="h2">Bem vindo!</Typograpy>
+          </div>
+          <div>
+            <Typograpy variant="h2">Faça seu dinheiro render.</Typograpy>
+          </div>
+        </div>
       </div>
     </>
   );
