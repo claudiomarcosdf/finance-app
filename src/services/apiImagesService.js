@@ -46,4 +46,26 @@ async function saveDocument(idCustomer, namePath, type, dataForm) {
   return response;
 }
 
-export { savePhoto, saveDocument };
+async function saveVoucher(customerId, investmentId, namePath, dataForm) {
+  /* [POST]   /clientes/voucher?id=xxx&investmentId=yyy   */
+
+  const response = await axios.post(
+    `${BASE_URL}/clientes/${namePath}?id=${customerId}&investmentId=${investmentId}`,
+    dataForm,
+    {
+      headers: {
+        accept: 'application/json',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Content-Type': `multipart/form-data; boundary=${dataForm._boundary}`,
+      },
+    }
+  );
+
+  if (response.status !== 200) {
+    throw Error(response.data.errors);
+  }
+
+  return response;
+}
+
+export { savePhoto, saveDocument, saveVoucher };

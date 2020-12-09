@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import ImageUploader from 'react-images-upload';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import _ from 'lodash';
-import { styles } from './customerProfilePhotoStyle';
+import ImageUpload from '../../components/ImageUploader/ImageUpload';
 import { addCustomerPhoto } from '../../states/Customer/customerActions';
 
 export default function CustomerProfilePhoto(props) {
@@ -32,37 +30,15 @@ export default function CustomerProfilePhoto(props) {
     setPhoto(picture);
   };
 
-  const classes = styles();
   return (
     <div>
-      <Typography
-        variant="h6"
-        style={{
-          marginTop: '2px',
-          marginBottom: '2px',
-          textAlign: 'center',
-        }}
-      >
-        Foto do perfil
-      </Typography>
-      <div className={classes.boxColumn}>
-        <div className={classes.box}>
-          <ImageUploader
-            {...props}
-            withIcon={true}
-            withPreview={true}
-            label="Tamanho máximo do arquivo: 2mb | tipos aceitos: JPG, PNG, GIF"
-            labelStyles={{ textAlign: 'center' }}
-            buttonText="Selecione sua foto"
-            fileSizeError="Tamanho do arquivo maior que o permitido"
-            fileTypeError="é um tipo não suportado"
-            onChange={onDrop}
-            imgExtension={['.jpg', '.gif', '.png']}
-            maxFileSize={2097152}
-            singleImage={true}
-          />
-        </div>
-      </div>
+      <ImageUpload
+        {...props}
+        onChange={onDrop}
+        title="Foto do perfil"
+        labelButton="Selecione sua foto"
+        imageSize={2097152}
+      />
       <Button color="secondary" onClick={handleModalClose}>
         Sair
       </Button>

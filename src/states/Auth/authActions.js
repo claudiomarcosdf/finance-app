@@ -42,7 +42,9 @@ export function logout() {
   };
 }
 
-export function validateToken(token) {
+export function validateToken(auth) {
+  const { token, email } = auth;
+
   return (dispatch) => {
     if (token) {
       axios

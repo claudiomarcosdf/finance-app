@@ -1,12 +1,23 @@
 function formatCurrency(value) {
-  return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  if (value) {
+    return value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
+  return '';
 }
 
 function formatNumber(value) {
   return value.toLocaleString('pt-BR', {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
+}
+
+function americanFormat(valueString) {
+  const removePoints = valueString.replaceAll('.', '');
+  return removePoints.replace(',', '.');
 }
 
 function formatDateBr(date) {
@@ -37,10 +48,36 @@ function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
+function getFirstName(value) {
+  if (value) {
+    const firstName = value.substring(0, value.indexOf(' '));
+    return capitalize(firstName);
+  }
+}
+
+function calcRentability(value) {
+  // M = C x (1 + i)t
+  const capital = toCurrencyUSA(value.capital);
+  const taxa = value.interest / 100;
+  const result = capital * (1 + taxa) ** value.months;
+  return parseFloat(result.toFixed(2));
+}
+
+function toCurrencyUSA(value) {
+  //Se houver vírgula no valor
+  if (value.toString().indexOf(',') !== -1) {
+    return parseFloat(americanFormat(value.toString()));
+  }
+  return parseFloat(value);
+}
+
 export {
   formatCurrency,
   formatNumber,
   formatDateBr,
   capitalize,
   formatDateToField,
+  getFirstName,
+  calcRentability,
+  toCurrencyUSA,
 };

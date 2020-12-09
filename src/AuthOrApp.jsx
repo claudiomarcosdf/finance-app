@@ -10,15 +10,18 @@ import { validateToken } from './states/Auth/authActions';
 import { fetchCustomer } from './states/Customer/customerActions';
 import _ from 'lodash';
 
+import Navbar from './components/Menu/Navbar';
+import Footer from './pages/Footer';
 import Home from './pages/Home';
 import CustomerProfile from './pages/CustomerProfile/CustomerProfile';
-import ContactUs from './pages/ContactUs';
+import Score from './pages/Score';
 import SignUp from './pages/Auth/SignUp';
 import SignIn from './pages/Auth/SignIn';
-import Marketing from './pages/Marketing';
-import Consulting from './pages/Consulting';
+import Investment from './pages/Investment/Investment';
+import Tips from './pages/Tips';
 import Customer from './pages/Customer/Customer';
 import Services from './pages/Services';
+import Perfil from './pages/Perfil/Perfil';
 
 export default function AuthOrApp({ children }) {
   const auth = useSelector((state) => state.auth);
@@ -27,15 +30,22 @@ export default function AuthOrApp({ children }) {
 
   useEffect(() => {
     if (auth.user) {
-      dispatch(validateToken(auth.user.token));
+      dispatch(validateToken(auth.user));
     }
-  }, [auth.user, dispatch]);
+  }, [auth.user]);
+
+  useEffect(() => {
+    if (!_.isEmpty(auth.user) && auth.validToken === true) {
+      config();
+
+      if (_.isEmpty(customerState.customer)) {
+        dispatch(fetchCustomer(auth.user.email));
+      }
+    }
+  }, [auth.validToken]);
 
   const config = () => {
     axios.defaults.headers.common['authorization'] = auth.user.token;
-    if (_.isEmpty(customerState.customer)) {
-      dispatch(fetchCustomer(auth.user.email));
-    }
   };
 
   const routes = () => {
@@ -44,11 +54,12 @@ export default function AuthOrApp({ children }) {
         <Route path="/minha-conta" component={CustomerProfile} />
         <Route path="/services" component={Services} />
         <Route path="/cadastro" component={Customer} />
-        <Route path="/contact-us" component={ContactUs} />
+        <Route path="/score" component={Score} />
         <Route path="/cadastre-se" component={SignUp} />
         <Route path="/entrar" component={SignIn} />
-        <Route path="/marketing" component={Marketing} />
-        <Route path="/consulting" component={Consulting} />
+        <Route path="/investimentos" component={Investment} />
+        <Route path="/tips" component={Tips} />
+        <Route path="/perfil" component={Perfil} />
         <Route path="/" exact component={Home} />
       </Switch>
     );
@@ -63,14 +74,17 @@ export default function AuthOrApp({ children }) {
 
   return (
     <>
+      <Navbar />
       <MuiThemeProvider theme={theme}>
         {routes()}
+
         {auth.user && auth.validToken ? (
           <>
-            {config()}
+            {/* {config()} */}
             <Switch>
               <Redirect to="/minha-conta" />
             </Switch>
+            <Footer />
           </>
         ) : !auth.user && !auth.validToken ? (
           <>

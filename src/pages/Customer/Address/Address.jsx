@@ -140,7 +140,7 @@ export default function Address() {
               id="address"
               label="Endereço"
               name="address"
-              style={{ width: '94ch' }}
+              style={{ width: '100%' }}
               value={customer.personal_data.residence.address}
               onChange={handleChangeResidenceValues}
             />
@@ -150,7 +150,7 @@ export default function Address() {
               id="complement"
               label="Complemento"
               name="complement"
-              style={{ width: '45ch' }}
+              style={{ width: '47%' }}
               value={customer.personal_data.residence.complement}
               onChange={handleChangeResidenceValues}
             />
@@ -158,7 +158,7 @@ export default function Address() {
               id="city"
               label="Cidade"
               name="city"
-              style={{ width: '45ch' }}
+              style={{ width: '46%' }}
               value={customer.personal_data.residence.city}
               onChange={handleChangeResidenceValues}
             />
@@ -166,7 +166,7 @@ export default function Address() {
           <Typography
             variant="h6"
             color="textSecondary"
-            style={{ marginTop: '40px', marginBottom: '30px' }}
+            style={{ marginTop: '30px', marginBottom: '25px' }}
           >
             Contatos:
           </Typography>

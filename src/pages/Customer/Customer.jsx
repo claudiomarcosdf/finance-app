@@ -5,9 +5,10 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
+import _ from 'lodash';
+import GlobalMessages from '../../components/Messages/GlobalMessages';
 import { styles } from './customerStyle';
 import '../../App.css';
 import PersonalData from './PersonalData/PersonalData';
@@ -59,6 +60,10 @@ export default function Home() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleClose = () => {
+    return <Link to="/"></Link>;
+  };
+
   const handleReset = () => {
     setActiveStep(0);
     setSaved(false);
@@ -73,60 +78,60 @@ export default function Home() {
   const classes = useStyles();
   return (
     <div className="home">
-      <div className={classes.box}>
-        <Grid item xs={12} sm={12} md={12}>
-          <Paper className={classes.paperStepper} elevation={0}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-              {steps.map((label) => (
-                <Step key={label}>
-                  <StepLabel>{label}</StepLabel>
-                </Step>
-              ))}
-            </Stepper>
-          </Paper>
-        </Grid>
-        <div>
-          {activeStep === steps.length ? (
-            <div>
-              {!saved && handleSave()}
-
-              <Grid item xs={12} sm={12} md={12}>
-                <Paper className={classes.paperContent} variant="outlined">
-                  <Typography className={classes.instructions}>
-                    {errors.length <= 0 ? (
-                      <span>Seus dados foram salvos e estão em análise!</span>
-                    ) : (
-                      <span>
-                        Ocorreu um erro, favor reiniciar e preencher os dados
-                        corretamente.
-                      </span>
-                    )}
-                  </Typography>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12}>
-                <Paper className={classes.paperButton} elevation={0}>
-                  <Button onClick={handleReset}>Reiniciar</Button>
-                </Paper>
-              </Grid>
+      {!_.isEmpty(customer) ? (
+        <div className={classes.box}>
+          <div className={classes.boxStepper}>
+            <div className={classes.paperStepper} elevation={0}>
+              <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label) => (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                ))}
+              </Stepper>
             </div>
-          ) : (
-            <div>
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item xs={12} sm={12} md={12}>
-                  <Paper className={classes.paperContent} variant="outlined">
+          </div>
+          <div>
+            {activeStep === steps.length ? (
+              <>
+                <div className={classes.boxContent}>
+                  {!saved && handleSave()}
+
+                  <div className={classes.paperContent}>
+                    <Typography className={classes.instructions}>
+                      {errors.length <= 0 ? (
+                        <span style={{ fontSize: '1.5rem' }}>
+                          Seus dados foram salvos e estão em análise!
+                        </span>
+                      ) : (
+                        <span style={{ fontSize: '1.5rem' }}>
+                          Ocorreu um erro, favor reiniciar e preencher os dados
+                          corretamente.
+                        </span>
+                      )}
+                    </Typography>
+                  </div>
+                </div>
+                <div className={classes.boxButton}>
+                  <div className={classes.paperButton}>
+                    <Button onClick={handleReset}>Reiniciar</Button>
+                  </div>
+                  <div className={classes.paperButton}>
+                    <Button onClick={handleClose}>Sair</Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className={classes.boxContent}>
+                  <div className={classes.paperContent}>
                     <div className={classes.instructions}>
                       {getStepContent(activeStep)}
                     </div>
-                  </Paper>
-                </Grid>
-                <Grid item xs={12} sm={12} md={12}>
-                  <Paper className={classes.paperButton} elevation={0}>
+                  </div>
+                </div>
+                <div className={classes.boxButton}>
+                  <div className={classes.paperButton}>
                     <Button
                       disabled={activeStep === 0}
                       onClick={handleBack}
@@ -141,13 +146,21 @@ export default function Home() {
                     >
                       {activeStep === steps.length - 1 ? 'Salvar' : 'Próximo'}
                     </Button>
-                  </Paper>
-                </Grid>
-              </Grid>
-            </div>
-          )}
+                  </div>
+                  <div className={classes.paperButton}>
+                    <Link to="/" className={classes.linkDecorator}>
+                      <Button className={classes.closeButton}>Sair</Button>
+                    </Link>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+          <GlobalMessages />
         </div>
-      </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

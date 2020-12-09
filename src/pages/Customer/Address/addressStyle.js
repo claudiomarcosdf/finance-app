@@ -18,6 +18,5 @@ export const styles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     flexDirection: 'row',
     marginBottom: '15px',
-    // backgroundColor: 'yellow',
   },
 }));

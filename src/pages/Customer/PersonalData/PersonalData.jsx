@@ -120,11 +120,13 @@ export default function PersonalData() {
                   value="Feminino"
                   control={<Radio />}
                   label="Feminino"
+                  style={{ color: 'black' }}
                 />
                 <FormControlLabel
                   value="Masculino"
                   control={<Radio />}
                   label="Masculino"
+                  style={{ color: 'black' }}
                 />
               </RadioGroup>
             </FormControl>

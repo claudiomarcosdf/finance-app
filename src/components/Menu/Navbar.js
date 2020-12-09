@@ -6,6 +6,7 @@ import './Navbar.css';
 import Dropdown from './Dropdown';
 
 //import { visibleButtonsLogged } from '../../states/Menu/menuAcitons';
+import { getFirstName } from '../../helpers/formatHelpers';
 import { logout } from '../../states/Auth/authActions';
 
 function Navbar() {
@@ -49,7 +50,7 @@ function Navbar() {
 
   return (
     <>
-      {console.log(menuState.labelButtonSignIn)}
+      {/* {console.log(menuState.labelButtonSignIn)} */}
       <nav className="navbar">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           My Invest
@@ -66,7 +67,7 @@ function Navbar() {
               className="nav-links"
               onClick={closeMobileMenu}
             >
-              Home
+              Minha conta
             </Link>
           </li>
           {menuState.linkPerfil ? (
@@ -104,11 +105,11 @@ function Navbar() {
           {menuState.linkPerfil ? (
             <li className="nav-item">
               <Link
-                to="/contact-us"
+                to="/perfil"
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
-                Perfil
+                Perfil investidor
               </Link>
             </li>
           ) : (
@@ -137,7 +138,9 @@ function Navbar() {
           <Button />
         ) : (
           <div className="user-menu">
-            <span style={styleUser}>Bem vindo, {customer.name}!</span>
+            <span style={styleUser}>
+              Bem vindo, {getFirstName(customer.name)}!
+            </span>
           </div>
         )}
       </nav>

@@ -6,18 +6,20 @@ import { createBrowserHistory } from 'history';
 import { Router, Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/Menu/Navbar';
-import GlobalMessages from './components/Messages/GlobalMessages';
 import store from './store';
 import AuthOrApp from './AuthOrApp';
+import Admin from './pages/Admin/Admin.jsx';
 
 const hist = createBrowserHistory();
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
-      <GlobalMessages />
-      <Navbar />
+      {/* <Navbar /> */}
 
       <Switch>
+        {/* ROTA QUE SERÁ USADA QD O MÓDULO ADMIN ESTIVER PRONTO */}
+        {/* <Route path="/admin" component={AuthOrAdmin} /> */}
+        <Route path="/admin" component={Admin} />
         <Route path="/" component={AuthOrApp} />
       </Switch>
     </Router>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ImageUploader from 'react-images-upload';
 import Typography from '@material-ui/core/Typography';
 
@@ -8,12 +8,14 @@ import { toastr } from 'react-redux-toastr';
 import _ from 'lodash';
 import { styles } from './documentsStyle';
 import { saveDocument } from '../../../services/apiImagesService';
+import { currentCustomer } from '../../../states/Customer/customerActions';
 
 export default function Documents(props) {
   const classes = styles();
-  const { _id, personal_data } = useSelector(
-    (state) => state.customerState.customer
-  );
+  const customer = useSelector((state) => state.customerState.customer);
+  const { _id, personal_data } = customer;
+  const dispatch = useDispatch();
+
   const { documents } = personal_data;
   const [imageCpf, setImageCpf] = useState(!!documents.cpf_name);
   const [imageRg, setImageRg] = useState(!!documents.rg_name);
@@ -58,10 +60,28 @@ export default function Documents(props) {
     saveDocument(_id, 'document', type, formData)
       .then((response) => {
         toastr.success('Sucesso', 'Documento salvo com sucesso.');
+        updateCurrentCustomer(response.data);
       })
       .catch((error) => {
         toastr.error('Erro', error);
       });
+  };
+
+  const updateCurrentCustomer = (cust) => {
+    const personalData = customer.personal_data;
+    const newDocuments = cust.personal_data.documents;
+
+    const alteredPersonalData = {
+      ...personalData,
+      documents: newDocuments,
+    };
+
+    const alteredCustomer = {
+      ...customer,
+      personal_data: alteredPersonalData,
+    };
+
+    dispatch(currentCustomer(alteredCustomer));
   };
 
   const onDropCpf = (picture) => {

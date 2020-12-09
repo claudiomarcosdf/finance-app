@@ -6,7 +6,7 @@ export default function GlobalMessages(props) {
   return (
     <div>
       <ReduxToastr
-        timeOut={7000}
+        timeOut={4000}
         newestOnTop={false}
         preventDuplicates={true}
         position="top-right"

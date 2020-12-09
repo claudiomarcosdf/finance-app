@@ -86,7 +86,7 @@ export default function SignIn() {
       <div className={classes.paper}>
         {/* <img src={logo} alt="" /> */}
         <Typography component="h1" variant="h4" className={classes.green}>
-          My Invest <i className="fas fa-seedling" />
+          <i className="fas fa-user-circle fa-lg"></i>
         </Typography>
         <Typography component="h1" variant="h5">
           Entrar

@@ -14,9 +14,6 @@ import Consulting from './pages/Consulting';
 import Customer from './pages/Customer/Customer';
 import Services from './pages/Services';
 
-import './App.css';
-import Home from './pages/Home';
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: green[600], contrastText: '#fff' },
@@ -26,21 +23,9 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <MuiThemeProvider theme={theme}>
-      <Router>
-        <Switch>
-          <Route path="/minha-conta" component={CustomerProfile} />
-          <Route path="/services" component={Services} />
-          <Route path="/cadastro" component={Customer} />
-          <Route path="/contact-us" component={ContactUs} />
-          <Route path="/cadastre-se" component={SignUp} />
-          <Route path="/entrar" component={SignIn} />
-          <Route path="/marketing" component={Marketing} />
-          <Route path="/consulting" component={Consulting} />
-          <Route path="/" exact component={Home} />
-        </Switch>
-      </Router>
-    </MuiThemeProvider>
+    <div>
+      <span>ADMIN AREA</span>
+    </div>
   );
 }
 

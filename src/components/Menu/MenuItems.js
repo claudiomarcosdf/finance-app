@@ -1,22 +1,22 @@
 export const MenuItems = [
   {
-    title: 'Marketing',
-    path: '/marketing',
-    cName: 'dropdown-link'
+    title: 'Meus investimentos',
+    path: '/investimentos',
+    cName: 'dropdown-link',
   },
   {
-    title: 'Consulting',
-    path: '/consulting',
-    cName: 'dropdown-link'
+    title: 'Dicas',
+    path: '/tips',
+    cName: 'dropdown-link',
   },
   {
-    title: 'Design',
-    path: '/design',
-    cName: 'dropdown-link'
+    title: 'Melhore seu score',
+    path: '/score',
+    cName: 'dropdown-link',
   },
   {
-    title: 'Development',
-    path: '/development',
-    cName: 'dropdown-link'
-  }
+    title: 'Educação financeira',
+    path: '/education',
+    cName: 'dropdown-link',
+  },
 ];
